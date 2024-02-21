@@ -4,92 +4,133 @@ using namespace std;
 
 class Book {
 private:
-    string author;
-    string title;
-    int stock;
-    string publisher;
-    double price;
+    string author[10];
+    string title[10];
+    int stock[10];
+    string publisher[10];
+    double price[10];
 
 public:
-    Book(string author, string title, int stock, string publisher, double price)
-        : author(author), title(title), stock(stock), publisher(publisher), price(price) {}
-
-    bool isAvailable() const {
-        return stock > 0;
+    // Constructor
+    Book() {
+        // Initialize with predefined values
+        addBook(0, "Yash", "Black", 2, "Bansal", 1000);
+        addBook(1, "Karan", "Fairy Tales", 5, "Bansal", 500);
+        addBook(2, "Ashutosh", "Horror Files", 3, "Patel", 800);
+        addBook(3, "Om", "Embedded Copies", 4, "Gohel", 800);
+        addBook(4, "Elizabeth", "Cosmic Rays", 0, "Richard", 1200);
     }
 
-    double getPrice() const {
-        return price;
-    }
-
-    bool sellCopies(int numCopies) {
-        if (stock >= numCopies) {
-            stock -= numCopies;
-            return true;
+    // Function to add a book
+    void addBook(int index, string author, string title, int stock, string publisher, double price) {
+        if (index >= 0 && index < 10) {
+            // Check if a book already exists at the given index
+            if (this->author[index].empty() && this->title[index].empty()) {
+                // Add the book only if the index is empty
+                this->author[index] = author;
+                this->title[index] = title;
+                this->stock[index] = stock;
+                this->publisher[index] = publisher;
+                this->price[index] = price;
+            } else {
+                cout << "A book already exists at index " << index << ". Cannot add another book." << endl;
+            }
         } else {
-            cout << "Not enough copies available." << endl;
-            return false;
+            cout << "Invalid index." << endl;
         }
     }
 
-    void displayDetails() const {
-        cout << "Title: " << title << endl;
-        cout << "Author: " << author << endl;
-        cout << "Publisher: " << publisher << endl;
-        cout << "Price: " << price << endl;
-        cout << "Stock: " << stock << endl;
+    // Function to check if the book is available
+    bool isAvailable(int index) const {
+        return stock[index] > 0;
     }
 
-    string getAuthor() const {
-        return author;
+    // Function to get the price of the book
+    double getPrice(int index) const {
+        return price[index];
     }
 
-    string getTitle() const {
-        return title;
+    // Function to sell copies of the book
+    bool sellCopies(const string& author, const string& title, int numCopies) {
+        for (int i = 0; i < 10; ++i) {
+            if (this->author[i] == author && this->title[i] == title) {
+                if (stock[i] >= numCopies) {
+                    stock[i] -= numCopies;
+                    return true;
+                } else {
+                    cout << "Not enough copies available." << endl;
+                    return false;
+                }
+            }
+        }
+        cout << "Book not found." << endl;
+        return false;
+    }
+
+    // Function to display book details
+    void displayDetails(int index) const {
+        cout << "Title: " << title[index] << endl;
+        cout << "Author: " << author[index] << endl;
+        cout << "Publisher: " << publisher[index] << endl;
+        cout << "Price: " << price[index] << endl;
+        cout << "Stock: " << stock[index] << endl;
+    }
+
+    // Function to get author of the book
+    string getAuthor(int index) const {
+        return author[index];
+    }
+
+    // Function to get title of the book
+    string getTitle(int index) const {
+        return title[index];
     }
 };
 
 int main() {
-    Book* library = new Book[5] {
-        Book("Yash", "Black", 2, "Bansal", 1000),
-        Book("Karan", "Fairy Tales", 5, "Bansal", 500),
-        Book("Ashutosh", "Horror Files", 3, "Patel", 800),
-        Book("Om", "Embedded Copies", 4, "Gohel", 800),
-        Book("Elizabeth", "Cosmic Rays", 0, "Richard", 1200)
-    };
+    Book* library = new Book();
 
-    string author, title;
-    cout << "Enter the author name: ";
-    cin >> author;
-    cout << "Enter the title: ";
-    cin >> title;
+    // User input for adding a book
+    int index;
+    string author, title, publisher;
+    double price;
+    int stock;
 
-    if (author.empty() || title.empty()) {
-        cout << "Author name or title cannot be empty." << endl;
-        delete[] library;
-        return 1;
+    cout << "Enter the index to add a book: ";
+    cin >> index;
+
+    if (index >= 0 && index < 10) {
+        cout << "Enter author name: ";
+        cin >> author;
+        cout << "Enter title: ";
+        cin >> title;
+        cout << "Enter stock: ";
+        cin >> stock;
+        cout << "Enter publisher: ";
+        cin >> publisher;
+        cout << "Enter price: ";
+        cin >> price;
+
+        library->addBook(index, author, title, stock, publisher, price);
+    } else {
+        cout << "Invalid index." << endl;
     }
 
-    bool found = false;
-    for (int i = 0; i < 5; ++i) {
-        if (library[i].getAuthor() == author && library[i].getTitle() == title && library[i].isAvailable()) {
-            found = true;
-            library[i].displayDetails();
-            int numCopies;
-            cout << "Enter the number of copies required: ";
-            cin >> numCopies;
-            if (library[i].sellCopies(numCopies)) {
-                double totalAmount = numCopies * library[i].getPrice();
-                cout << "Total amount: " << totalAmount << endl;
-            }
-            break;
-        }
+    // Buying a book
+    string bookAuthor, bookTitle;
+    int numCopies;
+    cout << "Enter the author of the book you want to buy: ";
+    cin >> bookAuthor;
+    cout << "Enter the title of the book you want to buy: ";
+    cin >> bookTitle;
+    cout << "Enter the number of copies you want to buy: ";
+    cin >> numCopies;
+
+    if (library->sellCopies(bookAuthor, bookTitle, numCopies)) {
+        double totalAmount = numCopies * library->getPrice(index);
+        cout << "Total amount: " << totalAmount << endl;
     }
 
-    if (!found) {
-        cout << "Book not found or not available." << endl;
-    }
-
-    delete[] library;
+    delete library;
     return 0;
 }
