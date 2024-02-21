@@ -90,45 +90,64 @@ public:
 int main() {
     Book* library = new Book();
 
-    // User input for adding a book
+    char choice;
     int index;
-    string author, title, publisher;
-    double price;
-    int stock;
 
-    cout << "Enter the index to add a book: ";
-    cin >> index;
+    cout << "Do you want to add the book or buy the book\n";
+    cout << "Type a to add and b for buy: ";
+    cin >> choice;
 
-    if (index >= 0 && index < 10) {
-        cout << "Enter author name: ";
-        cin >> author;
-        cout << "Enter title: ";
-        cin >> title;
-        cout << "Enter stock: ";
-        cin >> stock;
-        cout << "Enter publisher: ";
-        cin >> publisher;
-        cout << "Enter price: ";
-        cin >> price;
+    if (choice == 'a') {
 
-        library->addBook(index, author, title, stock, publisher, price);
-    } else {
-        cout << "Invalid index." << endl;
+        string author, title, publisher;
+        double price;
+        int stock;
+
+        cout << "Enter the index to add a book: ";
+        cin >> index;
+
+        if (index >= 0 && index < 10) {
+            cout << "Enter author name: ";
+            cin >> author;
+            cout << "Enter title: ";
+            cin >> title;
+            cout << "Enter stock: ";
+            cin >> stock;
+            cout << "Enter publisher: ";
+            cin >> publisher;
+            cout << "Enter price: ";
+            cin >> price;
+
+            library->addBook(index, author, title, stock, publisher, price);
+        } else {
+            cout << "Invalid index." << endl;
+        }
     }
 
-    // Buying a book
-    string bookAuthor, bookTitle;
-    int numCopies;
-    cout << "Enter the author of the book you want to buy: ";
-    cin >> bookAuthor;
-    cout << "Enter the title of the book you want to buy: ";
-    cin >> bookTitle;
-    cout << "Enter the number of copies you want to buy: ";
-    cin >> numCopies;
+    else if (choice == 'b') {
+        string bookAuthor, bookTitle;
+        int numCopies;
 
-    if (library->sellCopies(bookAuthor, bookTitle, numCopies)) {
-        double totalAmount = numCopies * library->getPrice(index);
-        cout << "Total amount: " << totalAmount << endl;
+        cout << "Enter the author of the book you want to buy: ";
+        cin >> bookAuthor;
+        cout << "Enter the title of the book you want to buy: ";
+        cin >> bookTitle;
+
+        // Search for the book and get its index
+        for (int i = 0; i < 10; ++i) {
+            if (library->getAuthor(i) == bookAuthor && library->getTitle(i) == bookTitle) {
+                index = i;
+                break;
+            }
+        }
+
+        cout << "Enter the number of copies you want to buy: ";
+        cin >> numCopies;
+
+        if (library->sellCopies(bookAuthor, bookTitle, numCopies)) {
+            double totalAmount = numCopies * library->getPrice(index);
+            cout << "Total amount: " << totalAmount << endl;
+        }
     }
 
     delete library;
