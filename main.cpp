@@ -1,65 +1,73 @@
 #include <iostream>
 #include "Book.h"
-using namespace std;
 
 int main() {
     int maxSize;
-    cout << "Enter the maximum size of the library: ";
-    cin >> maxSize;
+    std::cout << "Enter the maximum size of the library: ";
+    std::cin >> maxSize;
+
+    // Create Book library dynamically
+    Book* library = new Book(maxSize);
+
+    // Add default books
+    library->addBook("Yash", "Black", 2, "Bansal", 1000);
+    library->addBook("Karan", "Fairy Tales", 5, "Bansal", 500);
+    library->addBook("Ashutosh", "Horror Files", 3, "Patel", 800);
+    library->addBook("Om", "Embedded Copies", 4, "Gohel", 800);
+    library->addBook("Elizabeth", "Cosmic Rays", 0, "Richard", 1200);
+
     char choice;
-
-    Book library(maxSize);
     while (choice != 'e') {
-
-        cout << "Do you want to add, buy, or display the books?\n";
-        cout << "Type 'a' to add, 'b' to buy, 'd' to display, 'e' to exit: ";
-        cin >> choice;
+        std::cout << "Do you want to add, buy, display, or exit?\n";
+        std::cout << "Type 'a' to add, 'b' to buy, 'd' to display, 'e' to exit: ";
+        std::cin >> choice;
 
         switch (choice) {
             case 'a': {
-                string author, title, publisher;
+                std::string author, title, publisher;
                 double price;
                 int stock;
 
-                cout << "Enter author name: ";
-                cin >> author;
-                cout << "Enter title: ";
-                cin >> title;
-                cout << "Enter stock: ";
-                cin >> stock;
-                cout << "Enter publisher: ";
-                cin >> publisher;
-                cout << "Enter price: ";
-                cin >> price;
+                std::cout << "Enter author name: ";
+                std::cin >> author;
+                std::cout << "Enter title: ";
+                std::cin >> title;
+                std::cout << "Enter stock: ";
+                std::cin >> stock;
+                std::cout << "Enter publisher: ";
+                std::cin >> publisher;
+                std::cout << "Enter price: ";
+                std::cin >> price;
 
-                library.addBook(author, title, stock, publisher, price);
+                library->addBook(author, title, stock, publisher, price);
                 break;
             }
             case 'b': {
-                string bookAuthor, bookTitle;
+                std::string bookAuthor, bookTitle;
                 int numCopies;
 
-                cout << "Enter the author of the book you want to buy: ";
-                cin >> bookAuthor;
-                cout << "Enter the title of the book you want to buy: ";
-                cin >> bookTitle;
-                cout << "Enter the number of copies you want to buy: ";
-                cin >> numCopies;
+                std::cout << "Enter the author of the book you want to buy: ";
+                std::cin >> bookAuthor;
+                std::cout << "Enter the title of the book you want to buy: ";
+                std::cin >> bookTitle;
+                std::cout << "Enter the number of copies you want to buy: ";
+                std::cin >> numCopies;
 
-                library.buyBook(bookAuthor, bookTitle, numCopies);
+                library->buyBook(bookAuthor, bookTitle, numCopies);
                 break;
             }
             case 'd':
-                library.displayAllBooks();
+                library->displayAllBooks();
                 break;
             case 'e':
-                cout << "Exiting the program." << endl;
+                std::cout << "Exiting the program." << std::endl;
                 break;
             default:
-                cout << "Invalid choice. Please try again." << endl;
+                std::cout << "Invalid choice. Please try again." << std::endl;
         }
     }
 
+    // Free allocated memory
+    delete library;
     return 0;
 }
-
