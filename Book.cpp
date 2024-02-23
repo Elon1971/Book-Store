@@ -74,6 +74,7 @@ void Book::displayAllBooks() const {
     }
 }
 
+
 void Book::buyBook(std::string author, std::string title, int numCopies) {
     for (int i = 0; i < maxSize; ++i) {
         if (this->author[i] == author && this->title[i] == title) {
