@@ -179,8 +179,6 @@ void Book::addBook(string author, string title, int stock, string publisher, dou
     cout << "Library is full. Cannot add more books." << endl;
 }
 
-
-
 bool Book::isAvailable(int index) const {
     return stock[index] > 0;
 }
