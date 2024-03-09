@@ -14,11 +14,11 @@ private:
 
 public:
     // Constructor and destructor
-    Book(int maxSize = 10);
+    Book(int maxSize);
     ~Book();
 
     // Function to add a book
-    void addBook(std::string author, std::string title, int stock, std::string publisher, double price);
+    void addBook(string author, string title, int stock, string publisher, double price);
 
     // Function to check if the book is available
     bool isAvailable(int index) const;
